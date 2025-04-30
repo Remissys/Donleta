@@ -8,7 +8,7 @@ async function getDayPerformance(date) {
 
     const res = await sheets.spreadsheets.values.get({
         spreadsheetId: sheetId,
-        range: 'Runs Diarias!A2:H'
+        range: 'Runs Diarias!A2:L'
     })
 
     const rows = res.data.values
