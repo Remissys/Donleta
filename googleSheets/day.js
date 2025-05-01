@@ -23,11 +23,9 @@ async function getDayPerformance(date=null) {
     if (date) {
         filteredData = rows.filter(row => row[0] == date)
     } else {
-        // Filters all rows where date is equal to the last row fetched
+        // Filters all rows where date is equal to the last row's fetched date
         filteredData = rows.filter(row => row[0] == rows[rows.length-1][0])
     }
-
-    console.log(filteredData)
 
     return filteredData
 }

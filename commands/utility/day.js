@@ -4,7 +4,7 @@ const getDayPerformance = require('../../googleSheets/day.js')
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("dia")
-        .setDescription("Shows info on a specific day's runs")
+        .setDescription("Mostra informações das runs de um dia específico da roleta!")
         .addStringOption(option => 
             option.setName('data')
                 .setDescription('Data da roleta (Ex: 25/04)')
