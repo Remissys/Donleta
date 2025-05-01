@@ -2,7 +2,7 @@ const authorize = require('./auth')
 const { google } = require('googleapis')
 const { sheetId } = require('../config.json')
 
-async function getDayPerformance(date) {
+async function getDayPerformance(date=null) {
     const auth = await authorize()
     const sheets = google.sheets({ version: "v4", auth})
 
@@ -18,7 +18,16 @@ async function getDayPerformance(date) {
         return
     }
 
-    const filteredData = rows.filter(row => row[0] == date)
+    let filteredData = null
+
+    if (date) {
+        filteredData = rows.filter(row => row[0] == date)
+    } else {
+        // Filters all rows where date is equal to the last row fetched
+        filteredData = rows.filter(row => row[0] == rows[rows.length-1][0])
+    }
+
+    console.log(filteredData)
 
     return filteredData
 }
