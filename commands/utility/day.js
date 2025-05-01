@@ -32,7 +32,6 @@ module.exports = {
                 iconURL: 'https://static-cdn.jtvnw.net/jtv_user_pictures/52b34c20-8c4c-45a5-ac4b-0f027610d330-profile_image-70x70.png', 
                 url: 'https://twitch.com/don_nobru' 
             })
-            .setThumbnail('https://static-cdn.jtvnw.net/jtv_user_pictures/52b34c20-8c4c-45a5-ac4b-0f027610d330-profile_image-70x70.png')
             .setTimestamp()
             .setFooter({ 
                 text: 'Donleta', 
@@ -51,14 +50,7 @@ module.exports = {
             dayEmbed.addFields(
                 { 
                     name: `${row[1]}`, 
-                    value: `
-                        **Time** *${row[2]}* **(${row[3]})** | *${row[4]}* **(${row[5]})**
-                        **Boss:** *${row[6]}* **(${row[7]})**
-                        **Tempo:** *${row[8]}* **(${row[9]})**
-                        \u200B
-                        *Pontos: ${row[11]}*
-                        \u200B
-                    `
+                    value: `**Time** *${row[2]}* **(${row[3]})** | *${row[4]}* **(${row[5]})**\n**Boss:** *${row[6]}* **(${row[7]})**\n**Tempo:** *${row[8]}* **(${row[9]})**\n\u200B\n*Pontos: ${row[11]}*\n\u200B`
                 },        
             )
         })

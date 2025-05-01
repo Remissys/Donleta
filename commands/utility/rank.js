@@ -25,19 +25,6 @@ module.exports = {
                 iconURL: 'https://static-cdn.jtvnw.net/jtv_user_pictures/52b34c20-8c4c-45a5-ac4b-0f027610d330-profile_image-70x70.png' 
             });
 
-        const next = new ButtonBuilder()
-            .setCustomId('next')
-            .setLabel('\u200B>\u200B')
-            .setStyle(ButtonStyle.Secondary)
-
-        const previous = new ButtonBuilder()
-            .setCustomId('previous')
-            .setLabel('\u200B<\u200B')
-            .setStyle(ButtonStyle.Secondary)
-
-        const actionRow = new ActionRowBuilder()
-            .addComponents(previous, next)
-
         await interaction.reply({ embeds: [rankingsEmbed], components: [actionRow]})
     }
 }
