@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js')
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js')
 const getDayPerformance = require('../../googleSheets/day.js')
 
 module.exports = {
@@ -14,7 +14,7 @@ module.exports = {
         // Gets date if given
         const date = interaction.options.getString('data')
 
-        await interaction.deferReply({ flags: MessageFlags.Ephemeral })
+        await interaction.deferReply()
 
         // Get values from googlesheets
         const data = await getDayPerformance(date)

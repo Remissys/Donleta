@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js')
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js')
 const getWeekPerformance = require('../../googleSheets/week.js')
 
 module.exports = {
@@ -26,7 +26,7 @@ module.exports = {
         const week = interaction.options.getString("semana")
         const month = interaction.options.getString("mês")
 
-        await interaction.deferReply({ flags: MessageFlags.Ephemeral })
+        await interaction.deferReply()
 
         // Get data from googlesheets
         const data = await getWeekPerformance(week, month)
