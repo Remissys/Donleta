@@ -32,8 +32,6 @@ module.exports = {
             rankFieldValues += `**${info[2]}** \u2014 *${info[1]}*\n`
         })
 
-        console.log(months, data[0][0], typeof data[0][0])
-
         const rankEmbed = new EmbedBuilder()
             .setColor(0xff0000)
             .setTitle(`Ranking (${months[data[0][0]-1]})`)

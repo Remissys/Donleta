@@ -38,8 +38,6 @@ module.exports = {
                 iconURL: 'https://static-cdn.jtvnw.net/jtv_user_pictures/52b34c20-8c4c-45a5-ac4b-0f027610d330-profile_image-70x70.png' 
             });
 
-        console.log(data)
-
         if (date) {
             dayEmbed.setTitle(`Resultados (${date})`)
         } else {
