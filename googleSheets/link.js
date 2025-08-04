@@ -18,7 +18,7 @@ async function getParticipantsList(name) {
         return
     }
 
-    let isParticipant = rows.some(item => item[0] == name)
+    let isParticipant = rows.some(item => item[0].trim() == name)
 
     return isParticipant
 }
