@@ -1,5 +1,10 @@
 const { SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, ComponentType } = require('discord.js')
 const getUserProfile = require('../../googleSheets/profile.js')
+const { readFile } = require('fs/promises')
+const path = require('path')
+const { link } = require('fs')
+
+const linkedUsersPath = path.resolve(__dirname, "../../discordData/linked-users.json")
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -8,13 +13,36 @@ module.exports = {
         .addStringOption(option =>
             option.setName('nome')
                 .setDescription('Nome da twitch do usuário (Ex: don_nobru)')
-                .setRequired(true)
         ),
     async execute(interaction) {
 
-        const name = interaction.options.getString('nome')
+        // Gets input if given
+        let name = interaction.options.getString('nome')
 
         await interaction.deferReply()
+
+        // Verify if user is linked to a participant
+        try {
+            const content = await readFile(linkedUsersPath, { encoding: "utf-8"})
+
+            let parsedContent = JSON.parse(content)
+            let linkedUser = parsedContent.filter(item => item.discordID === interaction.user.id)
+            
+            if (linkedUser) name = linkedUser[0].playerName
+        } catch (err) {
+            // Verify if file exists
+            if (err.code === 'ENOENT') {
+                console.log('File does not exist')
+            } else {
+                console.log('Failed in verifying if user is linked to participant', err.code)
+            }
+        }
+
+        // Verifies if name is provided
+        if (!name) {
+            await interaction.editReply('Informe o nome de um participante!')
+            return
+        }
 
         // Get data from googlesheets
         const data = await getUserProfile(name)
