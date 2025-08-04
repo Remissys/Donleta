@@ -41,7 +41,7 @@ module.exports = {
             let isParticipantLinked = parsedContent.some(item => item.playerName === name)
     
             if (isUserLinked) {
-                await interaction.editReply('Você já está linkado a outro participante!')
+                await interaction.editReply('Você já está linkado a um participante!')
                 return
             } else if (isParticipantLinked) {
                 await interaction.editReply('Esse participante já está linkado a outro usuário!')
