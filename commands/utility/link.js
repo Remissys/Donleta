@@ -1,8 +1,7 @@
-const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js')
-const { readFile, appendFile, writeFile,  } = require('node:fs/promises')
-const { parse } = require('node:path')
+const { SlashCommandBuilder, MessageFlags } = require('discord.js')
+const { readFile, writeFile } = require('node:fs/promises')
 const path = require('path')
-// const { users } = require('../../discordData/linked-users.json')
+const getParticipantsList = require('../../googleSheets/link')
 
 const linkedUsersPath = path.resolve(__dirname, '../../discordData/linked-users.json')
 
@@ -22,30 +21,43 @@ module.exports = {
 
         await interaction.deferReply({ flags: MessageFlags.Ephemeral })
 
+        //verify if name exists in participants list
+        let isParticipant = await getParticipantsList(name)
+
+        if (!isParticipant) {
+            await interaction.editReply('O nome informado não está na lista de participantes da Donleta!')
+            return
+        }
+
         let userInfo = {"discordID": interaction.user.id, "discordUsername": interaction.user.username, "playerName": name}
 
         try {
             const content = await readFile(linkedUsersPath, { encoding: 'utf-8' })
 
             let parsedContent = JSON.parse(content)
-            let isLinked = parsedContent.some(item => item.playerName === name)
 
-            console.log('islinked: ', isLinked)
+            //verify if user or participant is already linked
+            let isUserLinked = parsedContent.some(item => item.discordID === interaction.user.id)
+            let isParticipantLinked = parsedContent.some(item => item.playerName === name)
     
-            if (isLinked) {
-                await interaction.editReply('Esse participante já está linkado a outro usuario')
-            } else {
-                parsedContent.push(userInfo)
+            if (isUserLinked) {
+                await interaction.editReply('Você já está linkado a outro participante!')
+                return
+            } else if (isParticipantLinked) {
+                await interaction.editReply('Esse participante já está linkado a outro usuário!')
+                return
+            } 
 
-                console.log(parsedContent)
+            //links user to participant in json file
+            parsedContent.push(userInfo)
 
-                await writeFile(linkedUsersPath, JSON.stringify(parsedContent, null, 2), { encoding: 'utf-8' })
-
-                await interaction.editReply('Sua conta foi linkada com sucesso!')
-            }
+            await writeFile(linkedUsersPath, JSON.stringify(parsedContent, null, 2), { encoding: 'utf-8' })
+            await interaction.editReply('Sua conta foi linkada com sucesso!')
 
         } catch (err) {
             console.log('codigo de erro: ', err)
+
+            //verifies if file is missing and creates a new one
             if (err.code === 'ENOENT') {
                 console.log('file does not exist')
 
@@ -54,7 +66,7 @@ module.exports = {
 
                     await interaction.editReply('Sua conta foi linkada com sucesso!')
                 } catch (err) {
-                    console.log('Erro ao editar linked-users.json', err.code)
+                    console.log('Erro ao criar linked-users.json', err.code)
                     await interaction.editReply('Houve um erro ao linkar sua conta')
                 }
 
