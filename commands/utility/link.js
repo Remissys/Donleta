@@ -16,12 +16,12 @@ module.exports = {
         ),
     async execute(interaction) {
 
-        //catch name for linking
+        // Get name input
         const name = interaction.options.getString('perfil')
 
         await interaction.deferReply({ flags: MessageFlags.Ephemeral })
 
-        //verify if name exists in participants list
+        // Verify if name exists in participants list
         let isParticipant = await getParticipantsList(name)
 
         if (!isParticipant) {
@@ -36,7 +36,7 @@ module.exports = {
 
             let parsedContent = JSON.parse(content)
 
-            //verify if user or participant is already linked
+            // Verify if user or participant is already linked
             let isUserLinked = parsedContent.some(item => item.discordID === interaction.user.id)
             let isParticipantLinked = parsedContent.some(item => item.playerName === name)
     
@@ -48,7 +48,7 @@ module.exports = {
                 return
             } 
 
-            //links user to participant in json file
+            // Links user to participant in json file
             parsedContent.push(userInfo)
 
             await writeFile(linkedUsersPath, JSON.stringify(parsedContent, null, 2), { encoding: 'utf-8' })
@@ -57,7 +57,7 @@ module.exports = {
         } catch (err) {
             console.log('codigo de erro: ', err)
 
-            //verifies if file is missing and creates a new one
+            // Verifies if file is missing and creates a new one
             if (err.code === 'ENOENT') {
                 console.log('file does not exist')
 

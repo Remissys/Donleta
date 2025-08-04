@@ -2,7 +2,6 @@ const { SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRow
 const getUserProfile = require('../../googleSheets/profile.js')
 const { readFile } = require('fs/promises')
 const path = require('path')
-const { link } = require('fs')
 
 const linkedUsersPath = path.resolve(__dirname, "../../discordData/linked-users.json")
 
