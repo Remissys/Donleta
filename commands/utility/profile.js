@@ -19,26 +19,34 @@ module.exports = {
         let name = interaction.options.getString('nome')
 
         await interaction.deferReply()
+        
+        // Verify if user is linked to a participant if name is not given
+        let isLinked = false
 
-        // Verify if user is linked to a participant
-        try {
-            const content = await readFile(linkedUsersPath, { encoding: "utf-8"})
-
-            let parsedContent = JSON.parse(content)
-            let linkedUser = parsedContent.filter(item => item.discordID === interaction.user.id)
-            
-            if (linkedUser) name = linkedUser[0].playerName
-        } catch (err) {
-            // Verify if file exists
-            if (err.code === 'ENOENT') {
-                console.log('File does not exist')
-            } else {
-                console.log('Failed in verifying if user is linked to participant', err.code)
-            }
-        }
-
-        // Verifies if name is provided
         if (!name) {
+            try {
+                const content = await readFile(linkedUsersPath, { encoding: "utf-8"})
+    
+                let parsedContent = JSON.parse(content)
+                let linkedUser = parsedContent.filter(item => item.discordID === interaction.user.id)
+                
+                if (linkedUser) {
+                    name = linkedUser[0].playerName
+                    isLinked = true
+                }
+            } catch (err) {
+                // Verify if file exists
+                if (err.code === 'ENOENT') {
+                    console.log('File does not exist')
+                } else {
+                    console.log('Failed in verifying if user is linked to participant', err.code)
+                }
+            }
+    
+        }
+        
+        // Verifies if name is provided
+        if (!name && !isLinked) {
             await interaction.editReply('Informe o nome de um participante!')
             return
         }
@@ -46,7 +54,7 @@ module.exports = {
         // Get data from googlesheets
         const data = await getUserProfile(name)
 
-        // Data not found for especified month return
+        // Data not found for especified name return
         if(!data || data.length == 0) {
             await interaction.editReply({ content: "Não foram encontrados dados para o nome especificado!" })
             return
