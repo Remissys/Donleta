@@ -6,8 +6,8 @@ const months = [
     'Maio',
     'Junho',
     'Julho',
-    'Setembro',
     'Agosto',
+    'Setembro',
     'Outubro',
     'Novembro',
     'Dezembro'
