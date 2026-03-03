@@ -13,7 +13,7 @@ const commands = [
     },
     {
         name: "/perfil",
-        description: "Apresenta os ultimos 3 resultados do usuário na Donleta! Você pode linkar sua conta do Discord com o seu perfil da Donleta usando o commando `/link` (wip) permitindo que não seja necessário especificar o usuário sempre que for enviado o comando!"
+        description: "Apresenta os ultimos 3 resultados do usuário na Donleta! Você pode linkar sua conta do Discord com o seu perfil da Donleta usando o commando `/link` permitindo que não seja necessário especificar o usuário sempre que for enviado o comando!"
     },
     {
         name: "/ping",
